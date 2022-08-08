@@ -1,26 +1,28 @@
-import { View, Text, KeyboardAvoidingView, SafeAreaView } from 'react-native'
+import { View, Text, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 import { StyledTextInput } from '../../components/StyledTextInput'
 import { RootTabScreenProps } from '../../types'
 import { StyledButton } from '../../components/StyledButton'
-import type { RegisterFormValues } from './@types'
+import type { RegisterValues } from './@types'
 import { Controller, useForm } from 'react-hook-form'
 import { registerRules } from '../../validations/rules/register'
+import { useRegister } from './hooks/useRegister'
 
 
-const defaultValues: RegisterFormValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+const defaultValues: RegisterValues = {
+    firstName: 'Moahammad reza',
+    lastName: 'Najib',
+    email: 'reza.najibf@gmail.com',
+    password: '12345678',
+    confirmPassword: '12345678'
 }
 export default function RegisterScreen({ navigation }: RootTabScreenProps<'Register'>) {
-    const { control, handleSubmit, formState: { errors } } = useForm<RegisterFormValues>({
+    const { control, handleSubmit, formState: { errors } } = useForm<RegisterValues>({
         defaultValues,
         mode: 'all',
     });
-    const onSubmit = (data: RegisterFormValues) => console.log(data);
+    const { onRegister, isLoading } = useRegister()
+    const onSubmit = (values: RegisterValues) => onRegister(values);
 
     return (
         <View className='flex-1 justify-center items-center bg-white'>
@@ -116,7 +118,7 @@ export default function RegisterScreen({ navigation }: RootTabScreenProps<'Regis
                         <View className='border-b-2 border-black w-24' />
                         <View className='h-1 w-16 border-b-2 border-black' />
                     </View>
-                    <StyledButton onPress={handleSubmit(onSubmit)} >
+                    <StyledButton disabled={isLoading} onPress={handleSubmit(onSubmit)} >
                         SIGNUP
                     </StyledButton>
                     <View className='items-center justify-between  mb-2'>
@@ -128,8 +130,8 @@ export default function RegisterScreen({ navigation }: RootTabScreenProps<'Regis
 
                     </View>
                 </View>
-            </KeyboardAvoidingView>
-        </View>
+            </KeyboardAvoidingView >
+        </View >
     )
 }
 

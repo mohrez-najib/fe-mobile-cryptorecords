@@ -5,19 +5,21 @@ import { RootTabScreenProps } from '../../types'
 import { StyledButton } from '../../components/StyledButton'
 import { useForm, Controller } from "react-hook-form";
 import { loginRules } from '../../validations/rules/login'
-import type { LoginFormValues } from './@types'
+import type { LoginValues } from './@types'
+import { useLogin } from './hooks/useLogin'
 
 
-const defaultValues: LoginFormValues = {
-    email: '',
-    password: ''
+const defaultValues: LoginValues = {
+    email: 'test1@test.com',
+    password: '12345678'
 }
 export default function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
-    const { control, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
+    const { control, handleSubmit, formState: { errors } } = useForm<LoginValues>({
         defaultValues,
         mode: 'all',
     });
-    const onSubmit = (data: LoginFormValues) => console.log(data);
+    const { onLogin, isLoading } = useLogin()
+    const onSubmit = (values: LoginValues) => onLogin(values);
     return (
         <View className='flex-1 justify-center items-center bg-white'>
             <KeyboardAvoidingView behavior='height'>
@@ -65,7 +67,7 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'Login'>)
                         <View className='border-b-2 border-black w-24' />
                         <View className='h-1 w-16 border-b-2 border-black' />
                     </View>
-                    <StyledButton onPress={handleSubmit(onSubmit)} >
+                    <StyledButton disabled={isLoading} onPress={handleSubmit(onSubmit)} >
                         SIGNIN
                     </StyledButton>
                     <View className='items-center justify-between mb-2'>
