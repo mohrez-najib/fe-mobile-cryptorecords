@@ -13,7 +13,14 @@ const set = async (key: string, value: unknown) => {
   } catch (error) {}
 };
 
+const clear = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (error) {}
+};
+
 export const storage = {
   get,
   set,
+  clear,
 };

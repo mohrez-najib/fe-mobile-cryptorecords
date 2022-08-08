@@ -7,13 +7,14 @@ import { useForm, Controller } from "react-hook-form";
 import { loginRules } from '../../validations/rules/login'
 import type { LoginValues } from './@types'
 import { useLogin } from './hooks/useLogin'
+import AuthenticatedScreen from '../../hoc/AuthenticatedScreen'
 
 
 const defaultValues: LoginValues = {
     email: 'test1@test.com',
     password: '12345678'
 }
-export default function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
+function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
     const { control, handleSubmit, formState: { errors } } = useForm<LoginValues>({
         defaultValues,
         mode: 'all',
@@ -83,4 +84,4 @@ export default function LoginScreen({ navigation }: RootTabScreenProps<'Login'>)
         </View >
     )
 }
-
+export default AuthenticatedScreen(LoginScreen)
